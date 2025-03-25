@@ -4,9 +4,9 @@ import { Text, View, StyleSheet } from 'react-native';
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Home screen</Text>
-      <Link href="/about" style={styles.button}>
-        Go to About screen
+      <Text style={styles.text}>Bem-Vindo ao SB Solutions</Text>
+      <Link href="/(tabs)/homescreen" style={styles.button}>
+        Ir para Home
       </Link>
     </View>
   );
@@ -20,11 +20,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
+    fontSize: 30,
+    padding: 20,
     color: '#fff',
+
   },
   button: {
-    fontSize: 20,
-    textDecorationLine: 'underline',
-    color: '#fff',
+    fontSize: 25,
+    marginTop: 30,
+    borderWidth: 2,
+    borderColor: "red",
+    borderRadius: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "red", 
+    color: '#fff', 
   },
 });
