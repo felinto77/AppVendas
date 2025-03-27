@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#2c3e50',
+    marginLeft: 55,
   },
   grid: {
     flexDirection: 'row',
