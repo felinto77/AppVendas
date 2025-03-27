@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
+import { Link } from 'expo-router';
 import ExploreScreen from "../ExploreScreen";
-import CategoriesScreen from '../(tabs)/explore';
+
 
 // Dados completos das marcas
 const brands = [
   {
     id: 1,
-    name: "SÃO BRAZ",
+    name: "Café",
     products: [
       { id: 1, name: "Café São Braz Tradicional 500g", price: 12.90 },
       { id: 2, name: "Café São Braz Extra Forte 500g", price: 14.50 },
@@ -132,13 +133,13 @@ const brands = [
 ];
 
 const HomeScreen = () => {
-  const [currentScreen, setCurrentScreen] = useState<"home" | "explore">("home");
+  const [currentScreen, setCurrentScreen] = useState<"home" | "categories">("home");
   const [selectedBrand, setSelectedBrand] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleBrandPress = (brand: any) => {
     setSelectedBrand(brand);
-    setCurrentScreen("explore");
+    setCurrentScreen("categories");
   };
 
   // Filtra marcas baseado na busca
@@ -146,7 +147,7 @@ const HomeScreen = () => {
     brand.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (currentScreen === "explore" && selectedBrand) {
+  if (currentScreen === "categories" && selectedBrand) {
     return <ExploreScreen brand={selectedBrand} onBack={() => setCurrentScreen("home")} />;
   }
 
@@ -154,7 +155,7 @@ const HomeScreen = () => {
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>APPVENDAS</Text>
+        <Text style={styles.title}>SB Solutions</Text>
       </View>
 
       {/* Barra de pesquisa */}
@@ -175,11 +176,13 @@ const HomeScreen = () => {
       {/* Botões principais */}
       <View style={styles.buttonRow}>
         <TouchableOpacity style={[styles.button, styles.primaryButton]}>
-          <Text style={styles.buttonText}>Categorias</Text>
+          <Text style={styles.buttonText1}>Categories</Text>
+          <Link href = "/(tabs)/categories" style={styles.button}>
+          </Link>
         </TouchableOpacity>
         
         <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText2}>Login</Text>
         </TouchableOpacity>
       </View>
 
@@ -249,7 +252,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    padding: 15,
+    padding: 10,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -262,7 +265,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#7f8c8d',
     marginLeft: 8,
   },
-  buttonText: {
+  buttonText1: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginTop: 35
+  },
+  buttonText2: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,

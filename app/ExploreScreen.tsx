@@ -1,6 +1,7 @@
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 
+
 interface Product {
   id: number;
   name: string;

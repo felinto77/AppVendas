@@ -10,9 +10,15 @@ export default function TabLayout() {
         tabBarActiveTintColor: '#ffd33d',
       }}
     >
+      <Tabs.Screen 
+        name="index" 
+        options={{ 
+          href: null, 
+  }} 
+/>
       <Tabs.Screen
         name="homescreen"
-        options={{
+        options={{ headerShown: false,
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
@@ -20,9 +26,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="categories"
         options={{
-          title: 'Explore',
+          title: 'Categories',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24}/>
           ),

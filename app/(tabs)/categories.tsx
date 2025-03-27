@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link } from 'expo-router';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+
+
 
 const categories = [
   { id: 1, name: 'Bebidas', icon: '🥤' },
@@ -12,13 +15,14 @@ const categories = [
   { id: 8, name: 'Promoções', icon: '🏷️' },
 ];
 
-const ExploreScreen = ({ onBack }: { onBack: () => void }) => {
+const CategoriesScreen = ({ onBack }: { onBack: () => void }) => {
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={onBack}>
           <Text style={styles.backButton}>← Voltar</Text>
+          <Link href = "/(tabs)/homescreen" style={styles.button}></Link>
         </TouchableOpacity>
         <Text style={styles.title}>Categorias</Text>
       </View>
@@ -89,6 +93,13 @@ const styles = StyleSheet.create({
     color: '#34495e',
     textAlign: 'center',
   },
+  button: {
+    flex: 1,
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 
-export default ExploreScreen;
+export default CategoriesScreen;
