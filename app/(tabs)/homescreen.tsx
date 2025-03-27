@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Image, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
+import ExploreScreen from "../ExploreScreen";
+import CategoriesScreen from '../(tabs)/explore';
 
-// Dados completos das marcas e produtos
+// Dados completos das marcas
 const brands = [
-  
   {
     id: 1,
     name: "SÃO BRAZ",
@@ -127,52 +128,75 @@ const brands = [
       { id: 51, name: "Cereal Gold Flakes Integral 300g", price: 15.50 },
     ]
   }
-
+  
 ];
 
 const HomeScreen = () => {
   const [currentScreen, setCurrentScreen] = useState<"home" | "explore">("home");
   const [selectedBrand, setSelectedBrand] = useState<any>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleBrandPress = (brand: any) => {
     setSelectedBrand(brand);
     setCurrentScreen("explore");
   };
 
+  // Filtra marcas baseado na busca
+  const filteredBrands = brands.filter(brand =>
+    brand.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   if (currentScreen === "explore" && selectedBrand) {
     return <ExploreScreen brand={selectedBrand} onBack={() => setCurrentScreen("home")} />;
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <TextInput 
-        style={styles.searchBar} 
-        placeholder="Digite para pesquisar um produto" 
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.title}>APPVENDAS</Text>
+      </View>
+
+      {/* Barra de pesquisa */}
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Buscar marcas..."
         placeholderTextColor="#999"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
       />
-      
-      <Image 
-        source={{ uri: 'https://via.placeholder.com/300x150' }} 
-        style={styles.banner} 
+
+      {/* Banner promocional */}
+      <Image
+        source={{ uri: 'https://via.placeholder.com/300x150' }}
+        style={styles.banner}
       />
+
+      {/* Botões principais */}
+      <View style={styles.buttonRow}>
+        <TouchableOpacity style={[styles.button, styles.primaryButton]}>
+          <Text style={styles.buttonText}>Categorias</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Lista de marcas */}
+      <Text style={styles.sectionTitle}>Nossas Marcas</Text>
       
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Produtos por categoria</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={[styles.button, styles.loginButton]}>
-        <Text style={styles.buttonText}>Já é cadastrado? Faça login</Text>
-      </TouchableOpacity>
-      
-      <Text style={styles.sectionTitle}>Nossas marcas</Text>
       <View style={styles.grid}>
-        {brands.map((brand) => (
+        {filteredBrands.map((brand) => (
           <TouchableOpacity
             key={brand.id}
-            style={styles.brandBox}
+            style={styles.brandCard}
             onPress={() => handleBrandPress(brand)}
           >
-            <Text style={styles.brandText}>{brand.name}</Text>
+            <View style={styles.brandLogo}>
+              <Text style={styles.brandInitial}>{brand.name.charAt(0)}</Text>
+            </View>
+            <Text style={styles.brandName} numberOfLines={2}>{brand.name}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -180,62 +204,63 @@ const HomeScreen = () => {
   );
 };
 
-//ExploreScreen incorporado
-const ExploreScreen = ({ brand, onBack }: { brand: any; onBack: () => void }) => {
-  return (
-    <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <Text style={styles.backButtonText}>← Voltar para marcas</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.brandTitle}>{brand.name}</Text>
-
-      {brand.products.map((product: any) => (
-        <TouchableOpacity key={product.id} style={styles.productItem}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.productName}>{product.name}</Text>
-          </View>
-          <Text style={styles.productPrice}>R$ {product.price.toFixed(2)}</Text>
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
-  );
-};
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8f9fa',
+  },
+  contentContainer: {
     padding: 16,
+    paddingBottom: 32,
+  },
+  header: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#2c3e50',
   },
   searchBar: {
     height: 50,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    backgroundColor: '#fff',
     borderRadius: 25,
     paddingHorizontal: 20,
-    marginBottom: 16,
     fontSize: 16,
-    backgroundColor: '#f9f9f9',
+    marginBottom: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   banner: {
     width: '100%',
     height: 150,
-    borderRadius: 10,
+    borderRadius: 12,
     marginBottom: 20,
     resizeMode: 'cover',
   },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
   button: {
-    backgroundColor: '#4A90E2',
+    flex: 1,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 12,
-    elevation: 3,
+    justifyContent: 'center',
   },
-  loginButton: {
-    backgroundColor: '#7B61FF',
+  primaryButton: {
+    backgroundColor: '#3498db',
+    marginRight: 8,
+  },
+  secondaryButton: {
+    backgroundColor: '#7f8c8d',
+    marginLeft: 8,
   },
   buttonText: {
     color: '#fff',
@@ -245,68 +270,46 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginVertical: 12,
-    color: '#333',
+    marginBottom: 16,
+    color: '#2c3e50',
   },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 20,
   },
-  brandBox: {
+  brandCard: {
     width: '48%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
     padding: 15,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 10,
+    marginBottom: 16,
     alignItems: 'center',
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#eee',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
-  brandText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#444',
-    textAlign: 'center',
+  brandLogo: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#e74c3c',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
   },
-  backButton: {
-    paddingVertical: 10,
-    marginBottom: 15,
-  },
-  backButtonText: {
-    color: '#4A90E2',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  brandTitle: {
+  brandInitial: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#fff',
+  },
+  brandName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#34495e',
     textAlign: 'center',
-    color: '#333',
-  },
-  productItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#eee',
-  },
-  productName: {
-    fontSize: 16,
-    color: '#555',
-    flexShrink: 1,
-    marginRight: 10,
-  },
-  productPrice: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#4A90E2',
   },
 });
 

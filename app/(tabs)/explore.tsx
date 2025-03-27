@@ -1,39 +1,41 @@
-import React from "react";
-import { ScrollView, Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-}
+const categories = [
+  { id: 1, name: 'Bebidas', icon: '🥤' },
+  { id: 2, name: 'Snacks', icon: '🍿' },
+  { id: 3, name: 'Cafés', icon: '☕' },
+  { id: 4, name: 'Biscoitos', icon: '🍪' },
+  { id: 5, name: 'Chocolates', icon: '🍫' },
+  { id: 6, name: 'Orgânicos', icon: '🌱' },
+  { id: 7, name: 'Importados', icon: '🌎' },
+  { id: 8, name: 'Promoções', icon: '🏷️' },
+];
 
-interface Brand {
-  name: string;
-  products: Product[];
-}
-
-interface ExploreScreenProps {
-  brand: Brand;
-  onBack: () => void;
-}
-
-const ExploreScreen: React.FC<ExploreScreenProps> = ({ brand, onBack }) => {
+const ExploreScreen = ({ onBack }: { onBack: () => void }) => {
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <Text style={styles.backButtonText}>← Voltar para marcas</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.brandTitle}>{brand.name}</Text>
-
-      {brand.products.map((product) => (
-        <TouchableOpacity key={product.id} style={styles.productItem}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.productName}>{product.name}</Text>
-          </View>
-          <Text style={styles.productPrice}>R$ {product.price.toFixed(2)}</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={onBack}>
+          <Text style={styles.backButton}>← Voltar</Text>
         </TouchableOpacity>
-      ))}
+        <Text style={styles.title}>Categorias</Text>
+      </View>
+
+      {/* Lista de categorias */}
+      <View style={styles.grid}>
+        {categories.map((category) => (
+          <TouchableOpacity 
+            key={category.id} 
+            style={styles.categoryCard}
+            onPress={() => console.log('Categoria selecionada:', category.name)}
+          >
+            <Text style={styles.categoryIcon}>{category.icon}</Text>
+            <Text style={styles.categoryName}>{category.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </ScrollView>
   );
 };
@@ -41,46 +43,51 @@ const ExploreScreen: React.FC<ExploreScreenProps> = ({ brand, onBack }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f8f9fa',
     padding: 16,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
   backButton: {
-    paddingVertical: 10,
-    marginBottom: 15,
+    fontSize: 18,
+    color: '#3498db',
+    marginRight: 15,
   },
-  backButtonText: {
-    color: '#4A90E2',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  brandTitle: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#333',
+    color: '#2c3e50',
   },
-  productItem: {
+  grid: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
+  },
+  categoryCard: {
+    width: '48%',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 16,
     alignItems: 'center',
-    padding: 15,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  categoryIcon: {
+    fontSize: 36,
     marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#eee',
   },
-  productName: {
+  categoryName: {
     fontSize: 16,
-    color: '#555',
-    flexShrink: 1,
-    marginRight: 10,
-  },
-  productPrice: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#4A90E2',
+    fontWeight: '600',
+    color: '#34495e',
+    textAlign: 'center',
   },
 });
 
