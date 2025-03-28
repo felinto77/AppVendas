@@ -27,7 +27,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="categories"
-        options={{
+        options={{ headerShown: false,
           title: 'Categories',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24}/>

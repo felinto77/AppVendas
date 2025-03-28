@@ -1,29 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'expo-router';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 
 
 
-const categories = [
-  { id: 1, name: 'Bebidas', icon: '🥤' },
-  { id: 2, name: 'Snacks', icon: '🍿' },
-  { id: 3, name: 'Cafés', icon: '☕' },
-  { id: 4, name: 'Biscoitos', icon: '🍪' },
-  { id: 5, name: 'Chocolates', icon: '🍫' },
-  { id: 6, name: 'Orgânicos', icon: '🌱' },
-  { id: 7, name: 'Importados', icon: '🌎' },
-  { id: 8, name: 'Promoções', icon: '🏷️' },
-];
+// const categories = [
+//   { id: 1, name: 'Bebidas', icon: '🥤' },
+//   { id: 2, name: 'Snacks', icon: '🍿' },
+//   { id: 3, name: 'Cafés', icon: '☕' },
+//   { id: 4, name: 'Biscoitos', icon: '🍪' },
+//   { id: 5, name: 'Chocolates', icon: '🍫' },
+//   { id: 6, name: 'Orgânicos', icon: '🌱' },
+//   { id: 7, name: 'Importados', icon: '🌎' },
+//   { id: 8, name: 'Promoções', icon: '🏷️' },
+// ];
+
+type Category = {
+  id: number,
+  name: string,
+  icon: string
+}
 
 const CategoriesScreen = ({ onBack }: { onBack: () => void }) => {
+
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    
+    listarcategorias();
+    
+  }, []);
+
+  async function listarcategorias() {
+    try {
+      const response = await fetch(
+        'http://192.168.8.91:14000/AppVendasApi/public/api/categories',
+      );
+      const json = await response.json();
+      setCategories(json);
+    } catch(error) {
+      console.error(error)
+    }
+  };
+
+  console.log(categories);
+
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={onBack}>
-          <Text style={styles.backButton}>← Voltar</Text>
-          <Link href = "/(tabs)/homescreen" style={styles.button}></Link>
-        </TouchableOpacity>
+      <Link href="/(tabs)/homescreen" asChild>
+    <TouchableOpacity style={styles.backButtonContainer}>
+      <Text style={styles.backButtonText}>← Voltar</Text>
+    </TouchableOpacity>
+  </Link>
         <Text style={styles.title}>Categorias</Text>
       </View>
 
@@ -54,11 +84,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 24,
-  },
-  backButton: {
-    fontSize: 18,
-    color: '#3498db',
-    marginRight: 15,
   },
   title: {
     fontSize: 24,
@@ -100,7 +125,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  backButtonContainer: {
+    padding: 8, 
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: '#007AFF', 
+  },
+
 });
 
 export default CategoriesScreen;
