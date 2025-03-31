@@ -1,3 +1,7 @@
 REACT-NATIVE-EXPO SALES-APP
 
-This Project is a Sales app inspired in SB Solutions, Made using React-Native and Expo Framework, for Educational Purposes.
+# MOVED TO https://github.com/felinto77/AppVendasCompleto/tree/main
+
+All history / commits of this app is here, but now he is in the other Repository.
+
+Toda a historia / commits desse projeto estâo aqui, mas agora ele está em outro repositorio.
